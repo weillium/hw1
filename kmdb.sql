@@ -148,8 +148,8 @@ VALUES
 -- The SQL statement for the movies output
 SELECT
     title,
-    mpaa_rating,
     year_released, 
+    mpaa_rating,
     director_name
 FROM
     movies
