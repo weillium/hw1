@@ -70,7 +70,7 @@
 -- TODO!
 DROP TABLE IF EXISTS movies;
 DROP TABLE IF EXISTS actors;
-DROP TABLE IF EXISTS cast;
+DROP TABLE IF EXISTS movie_cast;
 
 -- Create new tables, according to your domain model
 -- TODO!
@@ -88,7 +88,7 @@ CREATE TABLE actors (
     last_name TEXT
 );
 
-CREATE TABLE cast (
+CREATE TABLE movie_cast (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     role TEXT,
     pay INTEGER,
@@ -99,7 +99,46 @@ CREATE TABLE cast (
 -- Insert data into your database that reflects the sample data shown above
 -- Use hard-coded foreign key IDs when necessary
 -- TODO!
+INSERT INTO movies 
+    (title, year_released, mpaa_rating, director_name)
+VALUES
+    ("Batman Begins", "2005", "PG-13", "Christopher Nolan"),
+    ("The Dark Knight", "2008", "PG-13", "Christopher Nolan"),
+    ("The Dark Knight Rises", "2012", "PG-13", "Christopher Nolan");
 
+INSERT INTO actors
+    (first_name, last_name)
+VALUES
+    ("Christian", "Bale"),
+    ("Michael", "Caine"),
+    ("Liam", "Neeson"),
+    ("Katie", "Holmes"),
+    ("Gary", "Oldman"),
+    ("Heath", "Ledger"),
+    ("Aaron", "Eckhart"),
+    ("Maggie", "Gyllenhaal"),
+    ("Tom", "Hardy"),
+    ("Joseph", "Gordon-Levitt"),
+    ("Anne", "Hathaway");
+
+INSERT INTO movie_cast
+    (role, pay, movie_id, actor_id)
+VALUES
+    ("Bruce Wayne", 5, 1, 1),
+    ("Alfred", 4, 1, 2),
+    ("Ra's Al Ghul", 3, 1, 3),
+    ("Rachel Dawes", 2, 1, 4),
+    ("Commissioner Gordon", 1, 1, 5),
+    ("Bruce Wayne", 5, 2, 1),
+    ("Joker ", 4, 2, 6),
+    ("Harvey Dent", 3, 2, 7),
+    ("Alfred ", 2, 2, 2),
+    ("Rachel Dawes", 1, 2, 8),
+    ("Bruce Wayne", 5, 3, 1),
+    ("Commissioner Gordon", 4, 3, 5),
+    ("Bane ", 3, 3, 9),
+    ("John Blake", 2, 3, 10),
+    ("Selina Kyle", 1, 3, 11);
 
 -- Prints a header for the movies output
 .print "Movies"
@@ -107,7 +146,15 @@ CREATE TABLE cast (
 .print ""
 
 -- The SQL statement for the movies output
--- TODO!
+SELECT
+    title,
+    mpaa_rating,
+    year_released, 
+    director_name
+FROM
+    movies
+ORDER BY
+    year_released ASC;
 
 -- Prints a header for the cast output
 .print ""
@@ -115,6 +162,12 @@ CREATE TABLE cast (
 .print "========"
 .print ""
 
-
 -- The SQL statement for the cast output
--- TODO!
+SELECT
+    movies.title,
+    actors.first_name || " " || actors.last_name,
+    movie_cast.role
+FROM movies
+    INNER JOIN movie_cast ON movies.id = movie_cast.movie_id
+    INNER JOIN actors ON actors.id = movie_cast.actor_id
+ORDER BY movies.id ASC, movie_cast.pay DESC;
